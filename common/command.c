@@ -1,7 +1,7 @@
 /**
  * @file    command.c
  * @brief   Command Library API
- * @date    2016/08/04
+ * @date    2016/08/04  : create
  * @auther  jsaka1259
  */
 #include <common.h>

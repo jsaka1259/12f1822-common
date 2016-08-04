@@ -1,7 +1,7 @@
 /**
  * @file    common.c
  * @brief   Initialize PIC12F1822 Common Library API
- * @date    2016/06/29
+ * @date    2016/06/29  : create
  * @auther  jsaka1259
  */
 #include <common.h>

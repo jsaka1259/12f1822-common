@@ -1,7 +1,7 @@
 /**
  * @file    uart.c
  * @brief   UART Library API
- * @date    2016/06/30
+ * @date    2016/06/30  : create
  * @auther  jsaka1259
  */
 #include <common.h>

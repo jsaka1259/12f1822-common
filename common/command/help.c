@@ -1,7 +1,7 @@
 /**
  * @file    help.c
  * @brief   Help Command
- * @date    2016/08/04
+ * @date    2016/08/04  : create
  * @auther  jsaka1259
  */
 #include <common.h>
