@@ -1,6 +1,6 @@
 /**
  * @file    uart.c
- * @brief   UART API
+ * @brief   UART Library API
  * @date    2016/06/30
  * @auther  jsaka1259
  */
@@ -58,14 +58,4 @@ char uart_getc(void)
     while(RCIF == 0);
     RCIE = 0;
     return RCREG;
-}
-
-/**
- * @brief   Echo a Character
- * @param   None
- * @return  None
- */
-void uart_getche(void)
-{
-    uart_putc(uart_getc());
 }

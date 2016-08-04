@@ -1,13 +1,14 @@
 /**
  * @file    shell.c
- * @brief   Shell API
+ * @brief   Shell Library API
  * @date    2016/07/16
  * @auther  jsaka1259
  */
 #include <common.h>
 
-#define SHELL_BUF_SIZE (0x28)
-static char shell_buf[SHELL_BUF_SIZE];
+static char shell_buf[SHELL_BUF_SIZE];  /* Shell Buffer */
+static char* cmd;                       /* Commnad Pointer */
+static char* cmd_args;                  /* Command Arguments Pointer */
 
 /**
  * @brief   Shell Function
@@ -29,6 +30,21 @@ void shell(void)
             {
                 shell_buf[idx] = 0x00;
                 uart_putc('\n');
+                
+                /* Command Split */
+                cmd_split(shell_buf, &cmd, &cmd_args);
+                
+                /* Run Commnad */
+                switch(cmd_parser(cmd, cmd_args))
+                {
+                    case NOT_FOUND:
+                        uart_puts("Cound not find the Command: ");
+                        uart_puts(cmd);
+                        uart_puts("\n");
+                        break;
+                    default:
+                        break;
+                }
                 break;
             }
             else if(0x08 == ch && 0 < idx)

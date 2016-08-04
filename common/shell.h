@@ -1,6 +1,6 @@
 /**
  * @file    shell.h
- * @brief   Shell API
+ * @brief   Shell Library API
  * @date    2016/07/16
  * @auther  jsaka1259
  */
