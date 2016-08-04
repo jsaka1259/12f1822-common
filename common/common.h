@@ -68,6 +68,15 @@ char cmd_list[NUM_CMD][CMD_LEN] = {
     "help"
 };
 
+/* Command Prototyep Declaration */
+extern uint8_t help(char*);
+
+/* Command Pointer */
+uint8_t (*cmd_handler[NUM_CMD])(char*) = {
+    help,
+};
+
+
 /* Extern Declaration */
 extern void common_init(void);
 

@@ -6,31 +6,6 @@
  */
 #include <common.h>
 
-/* Command Prototyep Declaration */
-uint8_t help(char*);
-
-/* Command Pointer */
-uint8_t (*cmd_handler[NUM_CMD])(char*) = {
-    help,
-};
-
-/**
- * @brief   help
- * @param   p_cmd_args  : Commnad Arguments Poiter
- * @return  Error Code
- * @retval  NO_ERROR    : Valid
- */
-uint8_t help(char* p_cmd_args)
-{
-    uint8_t idx;
-    for(idx = 0; idx < NUM_CMD; idx++)
-    {
-        uart_puts(cmd_list[idx]);
-        uart_puts("\n");
-    }
-    return NO_ERROR;
-}
-
 /**
  * @brief   Command Split
  * @param   buf         : Buffer Pointer
