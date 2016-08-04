@@ -26,7 +26,7 @@ void shell(void)
         while(1)
         {
             ch = uart_getc();
-            if(0x0D == ch || SHELL_BUF_SIZE <= idx)
+            if(0x0D == ch || (SHELL_BUF_SIZE-1) <= idx)
             {
                 shell_buf[idx] = 0x00;
                 uart_putc('\n');
