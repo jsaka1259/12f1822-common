@@ -58,6 +58,7 @@
  */
 #define NUM_CMD     (1)     /* Number of Command */
 #define CMD_LEN     (16)    /* Command Length */
+#define DSC_LEN     (32)    /* Command Description Length */
 
 /* Error Code */
 #define NO_ERROR    (0)     /* No Eroor */
@@ -65,17 +66,21 @@
 
 /* Command List */
 char cmd_list[NUM_CMD][CMD_LEN] = {
-    "help"
+    "help",
+};
+
+/* Command Description */
+char cmd_description[NUM_CMD][DSC_LEN] = {
+    "Show Command List",
 };
 
 /* Command Prototyep Declaration */
-extern uint8_t help(char*);
+extern uint8_t help(char*, char*);
 
 /* Command Pointer */
-uint8_t (*cmd_handler[NUM_CMD])(char*) = {
+uint8_t (*cmd_handler[NUM_CMD])(char*, char*) = {
     help,
 };
-
 
 /* Extern Declaration */
 extern void common_init(void);

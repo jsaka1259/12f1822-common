@@ -51,7 +51,7 @@ uint8_t cmd_parser(char* p_cmd, char* p_cmd_args)
         if(0 == strcmp(cmd_list[idx], p_cmd))
         {
             /* Run Commnad */
-            ret = cmd_handler[idx](p_cmd_args);
+            ret = cmd_handler[idx](p_cmd, p_cmd_args);
         }
     }
     return ret;

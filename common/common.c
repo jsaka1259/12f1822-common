@@ -33,7 +33,7 @@
 void common_init(void)
 {
     OSCCON = 0xF0;               // OSC 32MHz(with Internal Oscillator)
-    PORTA  = 0x00;               // RA Pin default Low
+    PORTA  = 0x04;               // RA Pin default Low
     ANSELA = 0x00;               // All Digital Pin
     TRISA  = 0x0A;               // RA1, 3 Input Mode
     WPUA   = 0x08;               // Assign RA3 WPU
