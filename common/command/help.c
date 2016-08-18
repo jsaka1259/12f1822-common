@@ -21,7 +21,7 @@ uint8_t help(char* p_cmd, char* p_cmd_args)
         uart_puts(cmd_list[idx]);
         uart_puts(" : ");
         uart_puts(cmd_description[idx]);
-        uart_puts("\n");
+        uart_puts("\r\n");
     }
     return NO_ERROR;
 }

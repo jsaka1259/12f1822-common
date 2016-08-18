@@ -29,7 +29,7 @@ void shell(void)
             if(0x0D == ch || (SHELL_BUF_SIZE-1) <= idx)
             {
                 shell_buf[idx] = 0x00;
-                uart_putc('\n');
+                uart_puts("\r\n");
                 
                 /* Command Split */
                 cmd_split(shell_buf, &cmd, &cmd_args);
@@ -40,7 +40,7 @@ void shell(void)
                     case NOT_FOUND:
                         uart_puts("Cound not find the Command: ");
                         uart_puts(cmd);
-                        uart_puts("\n");
+                        uart_puts("\r\n");
                         break;
                     default:
                         break;
