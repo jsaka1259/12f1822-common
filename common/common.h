@@ -74,7 +74,7 @@ char cmd_description[NUM_CMD][DSC_LEN] = {
     "Show Command List",
 };
 
-/* Command Prototyep Declaration */
+/* Command Prototype Declaration */
 extern uint8_t help(char*, char*);
 
 /* Command Pointer */
