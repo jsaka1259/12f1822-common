@@ -1,43 +1,46 @@
-/**
- * @file    uart.c
- * @brief   UART Library API
- * @date    2016/06/30  : create
- * @auther  jsaka1259
- */
 #include <common.h>
 
 /**
- * @brief   Initialize UART
- * @param   None
- * @return  None
+ * UART Config
  */
+#define BAUDRATE    (9600)  /* 9.6kbps */
+#define TX9_RX9_BIT (0)     /* 0: 8bit, 1: 9bit */
+#define BRGH_BIT    (1)     /* 0: Set Low Speed Sampling */
+                            /* 1: High Speed Sampling */
+#if TX9_RX9_BIT == 1
+#define TX9_RX9_DATA (0x40)
+#else
+#define TX9_RX9_DATA (0x00)
+#endif
+
+#if BRGH_BIT == 1
+#define BRGH_DATA   (0x04)
+#define SPBRG_DATA  ((unsigned char)(((_XTAL_FREQ / 16) / BAUDRATE) - 1))
+#else
+#define BRGH_DATA   (0x00)
+#define SPBRG_DATA  ((unsigned char)(((_XTAL_FREQ / 64) / BAUDRATE) - 1))
+#endif
+
 void uart_init(void)
 {
+    APFCONbits.RXDTSEL = 1;     // RX -> RA5
+    APFCONbits.TXCKSEL = 1;     // TX -> RA4
+    
     BAUDCON = BRG16;
     SPBRG   = SPBRG_DATA;
     TXSTA   = (TX9_RX9_DATA | BRGH_DATA | 0x20);
     RCSTA   = (TX9_RX9_DATA | 0x90);
     
-    RCIF    = 0;
-    RCIE    = 0;
+    PIR1bits.RCIF = 0;
+    PIE1bits.RCIE = 0;
 }
 
-/**
- * @brief   Put a Character to UART
- * @param   byte    : Input a Character
- * @return  None
- */
 void uart_putc(const char byte)
 {
     while(TXIF == 0);
     TXREG = byte;
 }
 
-/**
- * @brief   Put String
- * @param   ptr     : String Pointer
- * @return  String Length
- */
 uint8_t uart_puts(const char* ptr)
 {
     uint8_t len = 0;
@@ -48,14 +51,9 @@ uint8_t uart_puts(const char* ptr)
     return len;
 }
 
-/**
- * @brief   Get a Character
- * @param   None
- * @return  A Character from UART
- */
-char uart_getc(void)
+uint8_t uart_getc(void)
 {
-    while(RCIF == 0);
+    while(PIR1bits.RCIF == 0);
     RCIE = 0;
-    return RCREG;
+    return RCREGbits.RCREG;
 }
