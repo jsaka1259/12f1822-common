@@ -2,20 +2,12 @@
 
 void i2c_master_init(void)
 {
-    ANSELA &= 0xF9;
-    PORTA  &= 0xF9;
-    TRISA  |= 0x06;
-    
     SSP1CON1  = 0x28;
     SSP1ADD   = 0x13;
 }
 
 void i2c_slave_init(uint8_t slave_addr)
 {
-    ANSELA &= 0xF9;
-    PORTA  &= 0xF9;
-    TRISA  |= 0x06;
-    
     SSP1STAT        = 0x80;
     SSP1CON1        = 0x26;
     SSP1CON2       |= 0x01;
