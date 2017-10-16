@@ -3,6 +3,10 @@
 void spi_master_init(void)
 {
     APFCON   &= 0x9F;
+    ANSELA   &= 0xF8;
+    TRISA    |= 0x04;
+    TRISA    &= 0xFC;
+    
     SSP1STAT  = 0x00;
     SSP1CON1  = 0x30;
 }
@@ -10,6 +14,10 @@ void spi_master_init(void)
 void spi_slave_init(void)
 {
     APFCON   &= 0x9F;
+    ANSELA   &= 0xF0;
+    TRISA    |= 0x06;
+    TRISA    &= 0xFE;
+    
     SSP1STAT  = 0x00;
     SSP1CON1  = 0x35;
     

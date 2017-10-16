@@ -3,7 +3,6 @@
 #define LCD_I2C_ADDR    0x7C    // LCD I2C Address
 #define CONTRAST        0x18    // CONTRAST
 
-
 void lcd_i2c_master_write(uint8_t addr, uint8_t cont, uint8_t data)
 {
     SEN = 1;
