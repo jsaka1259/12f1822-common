@@ -1,5 +1,5 @@
 #ifndef _COMMON_H_
-#define	_COMMON_H_
+#define _COMMON_H_
 
 /* System Clock */
 #ifndef _XTAL_FREQ
@@ -18,4 +18,4 @@
 #include "uart.h"
 #include "utils.h"
 
-#endif	/* _COMMON_H_ */
+#endif /* _COMMON_H_ */
