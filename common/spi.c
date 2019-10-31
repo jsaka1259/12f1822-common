@@ -1,4 +1,4 @@
-#include "common.h"
+#include "spi.h"
 
 void spi_master_init(void) {
   APFCON &= 0x9F;

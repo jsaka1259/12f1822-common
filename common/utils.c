@@ -1,6 +1,6 @@
-#include "common.h"
+#include "utils.h"
 
-void itostring(uint8_t digit, uint16_t data, uint8_t* buf) {
+void itostring(uint8_t digit, uint8_t *buf, uint16_t data) {
   uint8_t i;
 
   buf += digit;

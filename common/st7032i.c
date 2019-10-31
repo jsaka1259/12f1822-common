@@ -1,4 +1,4 @@
-#include "common.h"
+#include "st7032i.h"
 
 void st7032i_i2c_master_write(uint8_t addr, uint8_t cont, uint8_t data) {
   SEN = 1;

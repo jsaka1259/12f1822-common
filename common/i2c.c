@@ -1,4 +1,4 @@
-#include "common.h"
+#include "i2c.h"
 
 void i2c_master_init(void) {
   ANSELA &= 0xF9;
