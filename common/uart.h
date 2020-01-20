@@ -4,28 +4,29 @@
 #include <xc.h>
 #include <stdint.h>
 
-// Baudrate
-#define BAUDRATE    (9600)
-// Data Width
-// 0: 8bit, 1: 9bit
-#define TX9_RX9_BIT (0)
-// Sampling Speed
-// 0: Low Speed
-// 1: High Speed
-#define BRGH_BIT    (1)
+#include "xtal.h"
 
-#if TX9_RX9_BIT == 1
-#define TX9_RX9_DATA (0x40)
-#else
-#define TX9_RX9_DATA (0x00)
-#endif
+// baudrate
+#define BAUDRATE 9600
 
-#if BRGH_BIT == 1
-#define BRGH_DATA   (0x04)
-#define SPBRG_DATA  ((unsigned char)(((_XTAL_FREQ / 16) / BAUDRATE) - 1))
-#else
-#define BRGH_DATA   (0x00)
-#define SPBRG_DATA  ((unsigned char)(((_XTAL_FREQ / 64) / BAUDRATE) - 1))
+// synchronous bit
+// 0: asynchronous, 1: synchronous
+#define SYNC_BIT 0
+
+// 16 bit baudrate generater
+// 0: 8 bit, 1: 16bit
+#define BRG16_BIT 1
+
+// sampling speed
+// 0: low speed, 1: high speed
+#define BRGH_BIT 1
+
+#if SYNC_BIT == 0 && BRG16_BIT == 0 && BRGH_BIT == 0
+#define SPBRG_DATA (uint16_t)(((_XTAL_FREQ / BAUDRATE) / 64) - 1)
+#elif SYNC_BIT == 0 && (BRG16_BIT == 1 ^ BRGH_BIT == 1)
+#define SPBRG_DATA (uint16_t)(((_XTAL_FREQ / BAUDRATE) / 16) - 1)
+#elif SYNC_BIT == 1 || (BRG16_BIT == 1 && BRGH_BIT == 1)
+#define SPBRG_DATA (uint16_t)(((_XTAL_FREQ / BAUDRATE) / 4) - 1)
 #endif
 
 extern void uart_init(void);

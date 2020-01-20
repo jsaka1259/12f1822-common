@@ -1,67 +1,64 @@
 #include "i2c.h"
 
 void i2c_master_init(void) {
-  ANSELA &= 0xF9;
-  PORTA  &= 0xF9;
+  ANSELA &= 0xf9;
+  PORTA  &= 0xf9;
   TRISA  |= 0x06;
 
   SSP1CON1 = 0x28;
   SSP1ADD  = 0x13;
 }
 
-void i2c_slave_init(uint8_t slave_addr) {
-  ANSELA &= 0xF9;
-  PORTA  &= 0xF9;
+void i2c_slave_init(uint8_t addr) {
+  ANSELA &= 0xf9;
+  PORTA  &= 0xf9;
   TRISA  |= 0x06;
 
   SSP1STAT        = 0x80;
   SSP1CON1        = 0x26;
   SSP1CON2       |= 0x01;
-  SSP1ADD         = (slave_addr << 1) & 0xFE;
-  SSP1MSK         = 0xFE;
+  SSP1ADD         = addr;
+  SSP1MSK         = 0xfe;
   PIR1bits.SSP1IF = 0;
   PIE1bits.SSP1IE = 1;
 }
 
-void i2c_tx_data(uint8_t data) {
-  PIR1bits.SSP1IF = 0;
-  SSPBUF = data;
-  while(!PIR1bits.SSP1IF);
-}
-
-uint8_t i2c_rx_data(void) {
-  PIR1bits.SSP1IF = 0;
-  SSP1CON2bits.RCEN = 1;
-  while(SSP1CON2bits.RCEN)
-    ;
-  return SSPBUF;
-}
-
-void i2c_master_write(uint8_t addr, uint8_t data) {
+uint8_t i2c_start(uint8_t addr) {
   SSP1CON2bits.SEN = 1;
-  while(SSP1CON2bits.SEN)
-    ;
-  i2c_tx_data((addr << 1) & 0xFE);
-  i2c_tx_data(data);
-  PIR1bits.SSP1IF  = 0;
-  SSP1CON2bits.PEN = 1;
-  while(SSP1CON2bits.PEN);
+  while(!PIR1bits.SSP1IF);
+  PIR1bits.SSP1IF = 0;
+  SSPBUF = addr;
+  while(SSP1STATbits.BF);
+  return SSP1CON2bits.ACKSTAT;
 }
 
-uint8_t i2c_master_read(uint8_t addr) {
-  uint8_t data;
+uint8_t i2c_repeat_start(uint8_t addr) {
+  SSP1CON2bits.RSEN = 1;
+  while(!PIR1bits.SSP1IF);
+  PIR1bits.SSP1IF = 0;
+  SSPBUF = addr;
+  while(SSP1STATbits.BF);
+  return SSP1CON2bits.ACKSTAT;
+}
 
-  SSP1CON2bits.SEN   = 1;
-  while(SSP1CON2bits.SEN)
-    ;
-  i2c_tx_data((addr << 1) | 0x01);
-  data = i2c_rx_data();
-  SSP1CON2bits.ACKDT = 1;
-  SSP1CON2bits.ACKEN = 1;
-  while(SSP1CON2bits.ACKEN);
-  PIR1bits.SSP1IF    = 0;
-  SSP1CON2bits.PEN   = 1;
-  while(SSP1CON2bits.PEN);
+void i2c_stop(void) {
+  SSP1CON2bits.PEN = 1;
+}
+
+uint8_t i2c_write(uint8_t data) {
+  SSPBUF = data;
+  while(SSP1STATbits.BF);
+  return SSP1CON2bits.ACKSTAT;
+}
+
+uint8_t i2c_read(uint8_t ack) {
+  uint8_t data = 0;
+  SSP1CON2bits.ACKDT = ack;
+  SSP1CON2bits.RCEN = 1;
+  while(!SSP1STATbits.BF);
+  data = SSPBUF;
+  while(!PIR1bits.SSP1IF);
+  PIR1bits.SSP1IF = 0;
   return data;
 }
 
@@ -85,15 +82,15 @@ void i2c_slave_write(uint8_t data) {
   }
 }
 
-uint8_t i2c_slave_read(uint8_t* data) {
-  uint8_t ret = -1;
+uint8_t i2c_slave_read(uint8_t *data) {
+  uint8_t ret = 0xff;
   uint8_t buf;
 
   if(PIR1bits.SSP1IF) {
     if((SSP1STAT & 0x04) == 0) {
-      if( (SSP1STAT & 0x20) == 0) {
+      if((SSP1STAT & 0x20) == 0)
         buf = SSP1BUF;
-      } else {
+      else {
         ret = 0;
         *data = SSP1BUF;
       }

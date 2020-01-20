@@ -1,21 +1,20 @@
 #include "spi.h"
 
 void spi_master_init(void) {
-  APFCON &= 0x9F;
-  ANSELA &= 0xF8;
+  APFCON &= 0x9f;
+  ANSELA &= 0xf8;
   TRISA  |= 0x04;
-  TRISA  &= 0xFC;
+  TRISA  &= 0xfc;
 
   SSP1STAT = 0x00;
   SSP1CON1 = 0x30;
 }
 
-void spi_slave_init(void)
-{
-  APFCON &= 0x9F;
-  ANSELA &= 0xF0;
+void spi_slave_init(void) {
+  APFCON &= 0x9f;
+  ANSELA &= 0xf0;
   TRISA  |= 0x06;
-  TRISA  &= 0xFE;
+  TRISA  &= 0xfe;
 
   SSP1STAT = 0x00;
   SSP1CON1 = 0x35;
@@ -26,8 +25,7 @@ void spi_slave_init(void)
 
 uint8_t spi_master_xfer(uint8_t data) {
   SSP1BUF = data;
-  while(!SSPSTATbits.BF)
-    ;
+  while(!SSPSTATbits.BF);
   return SSP1BUF;
 }
 
