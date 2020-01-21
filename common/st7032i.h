@@ -14,7 +14,7 @@
 
 #ifdef VDD_5V
 // for 5V
-#define ST7032I_CONTRAST 0x20
+#define ST7032I_CONTRAST 0x18
 #else
 // for 3.3V
 #define ST7032I_CONTRAST 0x30
