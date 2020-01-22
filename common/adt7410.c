@@ -18,7 +18,8 @@ void adt7410_init(uint8_t mode) {
       break;
   }
 
-  i2c_start(ADT7410_I2C_ADDR);
+  i2c_start();
+  i2c_write(ADT7410_I2C_ADDR);
   i2c_write(0x03);
   i2c_write(mval);
   i2c_stop();
@@ -28,16 +29,19 @@ int16_t adt7410_read(uint8_t mode) {
   uint16_t val = 0;
 
   if (mode == 1) {
-    i2c_start(ADT7410_I2C_ADDR);
+    i2c_start();
+    i2c_write(ADT7410_I2C_ADDR);
     i2c_write(0x03);
     i2c_write(0x20 | 0x80);
     i2c_stop();
     __delay_ms(240);
   }
 
-  i2c_start(ADT7410_I2C_ADDR);
+  i2c_start();
+  i2c_write(ADT7410_I2C_ADDR);
   i2c_write(0x00);
-  i2c_repeat_start(ADT7410_I2C_ADDR | 1);
+  i2c_repeat_start();
+  i2c_write(ADT7410_I2C_ADDR | 1);
   val  = (uint16_t)i2c_read(0) << 8;
   val |= (uint16_t)i2c_read(1);
   i2c_stop();
@@ -47,4 +51,3 @@ int16_t adt7410_read(uint8_t mode) {
   else
     return val;
 }
-

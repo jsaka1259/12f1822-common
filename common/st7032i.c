@@ -1,7 +1,8 @@
 #include "st7032i.h"
 
 static void st7032i_i2c_write(uint8_t addr, uint8_t cont, uint8_t data) {
-  i2c_start(addr);
+  i2c_start();
+  i2c_write(addr);
   i2c_write(cont);
   i2c_write(data);
   i2c_stop();

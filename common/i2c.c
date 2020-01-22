@@ -23,22 +23,14 @@ void i2c_disable(void) {
   SSP1CON1 = 0x08;
 }
 
-uint8_t i2c_start(uint8_t addr) {
+uint8_t i2c_start(void) {
   SSP1CON2bits.SEN = 1;
   i2c_wait();
-
-  SSPBUF = addr;
-  i2c_wait();
-  return SSP1CON2bits.ACKSTAT;
 }
 
-uint8_t i2c_repeat_start(uint8_t addr) {
+uint8_t i2c_repeat_start(void) {
   SSP1CON2bits.RSEN = 1;
   i2c_wait();
-
-  SSPBUF = addr;
-  i2c_wait();
-  return SSP1CON2bits.ACKSTAT;
 }
 
 void i2c_stop(void) {
