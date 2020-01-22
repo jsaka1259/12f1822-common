@@ -30,6 +30,7 @@
 #endif
 
 extern void uart_init(void);
+extern void uart_disable(void);
 extern void uart_putc(const char data);
 extern uint8_t uart_puts(const char *buf);
 extern uint8_t uart_getc(void);
