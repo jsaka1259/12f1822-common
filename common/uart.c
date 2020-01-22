@@ -45,5 +45,5 @@ uint8_t uart_puts(const char *buf) {
 
 uint8_t uart_getc(void) {
   while(!PIR1bits.RCIF);
-  return RCREGbits.RCREG;
+  return RCREG;
 }
